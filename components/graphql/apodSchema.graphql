@@ -1,0 +1,12 @@
+type Query {
+  apod(date: String, start_date: String, end_date: String, count: Int, thumbs: Boolean, api_key: String): APOD
+}
+
+type APOD {
+  date: String
+  explanation: String
+  media_type: String
+  title: String
+  url: String
+  hdurl: String
+}
