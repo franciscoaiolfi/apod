@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <h1>Teste 23as2</h1>
-      <Apod date={formattedDate} />
+      <Apod date={formattedDate} />4
     </main>
   );
 }

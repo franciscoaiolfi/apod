@@ -1,7 +1,6 @@
-'use client'
+"use client";
 
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 interface ApodData {
   copyright?: string;
@@ -18,6 +17,7 @@ interface ApodProps {
   date: string;
 }
 
+
 const Apod: React.FC<ApodProps> = ({ date }) => {
   const [data, setData] = useState<ApodData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -26,13 +26,13 @@ const Apod: React.FC<ApodProps> = ({ date }) => {
 
 
 
-
-
   useEffect(() => {
     const fetchData = async () => {
-      const api_key = "peyEKcMLtJ165RpuuPwgYGALx1u1eVS1y8ILOSHP";
+      const api_key = process.env.NEXT_PUBLIC_API_KEY_APOD;
       try {
-        const res = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${api_key}&date=${date}`);
+        const res = await fetch(
+          `https://api.nasa.gov/planetary/apod?api_key=${api_key}&date=${date}`
+        );
         if (!res.ok) {
           throw new Error(`Failed to fetch data: ${res.statusText}`);
         }
@@ -40,7 +40,7 @@ const Apod: React.FC<ApodProps> = ({ date }) => {
         setData(result);
         setError(null);
       } catch (error) {
-        let errorMessage = 'An unknown error occurred';
+        let errorMessage = "An unknown error occurred";
         if (error instanceof Error) {
           errorMessage = error.message;
         }
@@ -61,14 +61,19 @@ const Apod: React.FC<ApodProps> = ({ date }) => {
   }
 
   const { explanation, media_type, title, url } = data;
+  const limitText = explanation.substring(0, 250) + "...";
 
   return (
-    <div>
+    <div className="apod-content-wrapper">
       <h1>{title}</h1>
       <p>{date}</p>
-      <p>{explanation}</p>
-      {media_type === 'image' && <img src={url} alt={title} />}
-      {media_type === 'video' && <iframe src={url} title={title}></iframe>}
+      <p>{limitText}</p>
+      <div>
+        {media_type === "image" && <img src={url} alt={title} />}
+        <a href={url} target="_blank">
+          <button>See Original</button>
+        </a>
+      </div>
     </div>
   );
 };
